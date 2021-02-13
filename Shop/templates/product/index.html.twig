@@ -4,6 +4,11 @@
 
 {% block body %}
 
-<p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit numquam molestias repellendus, consequuntur ullam placeat amet illo assumenda, soluta distinctio incidunt asperiores sed nesciunt vitae ipsa expedita ex quaerat aliquid?
+{% for product in products %}
+    <h2> {{product.name}}</h2>
+    <p>{{product.price}} €</p>
+    <img src={{product.url}} alt="">
+{% endfor %}
+
 
 {% endblock %}
