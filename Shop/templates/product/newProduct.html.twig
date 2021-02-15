@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% form_theme formProduct 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+
+<h2> Création d'un produit</h2>
+    
+    {{ form_start(formProduct) }}
+        {{ form_row(formProduct.name, {'attr':{'placeholder': "Nom du produit"}}) }}
+        {{ form_row(formProduct.description, {'attr':{'placeholder': "Nom du description"}}) }}
+        {{ form_row(formProduct.price, {'attr':{'placeholder': "Nom du prix"}}) }}
+        {{ form_row(formProduct.url, {'attr':{'placeholder': "Nom du url"}}) }}
+        
+        <button type="Submit" class="btn btn-success"> Enregistrer </button>
+    
+    {{ form_end(formProduct)}}
+
+{% endblock %}
