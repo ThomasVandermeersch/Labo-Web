@@ -33,6 +33,16 @@ class Order
      */
     private $customerName;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validated;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +80,30 @@ class Order
     public function setCustomerName(string $customerName): self
     {
         $this->customerName = $customerName;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getValidated(): ?bool
+    {
+        return $this->validated;
+    }
+
+    public function setValidated(bool $validated): self
+    {
+        $this->validated = $validated;
 
         return $this;
     }
