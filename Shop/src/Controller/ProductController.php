@@ -33,7 +33,7 @@ class ProductController extends AbstractController
     * @Route("/product/modify/{id}", name="modify_product")
  
     */
-    public function newProduct(Product $product, Request $request,EntityManagerInterface $manager)
+    public function newProduct(Product $product = null, Request $request,EntityManagerInterface $manager)
     {
         if(! $product){
             $product = new Product();
