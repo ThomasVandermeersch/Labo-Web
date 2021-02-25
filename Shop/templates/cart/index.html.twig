@@ -6,5 +6,10 @@
 {% block body %}
 
 <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit numquam molestias repellendus, consequuntur ullam placeat amet illo assumenda, soluta distinctio incidunt asperiores sed nesciunt vitae ipsa expedita ex quaerat aliquid?
+<ul>
+{% for item in product %}
+    <li> {{item.number}}</li>
 
+{% endfor %}
+<ul>
 {% endblock %}
