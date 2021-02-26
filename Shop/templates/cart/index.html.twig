@@ -1,22 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %} Mon chariot {% endblock %}
 
 
 {% block body %}
-
-<p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit numquam molestias repellendus, consequuntur ullam placeat amet illo assumenda, soluta distinctio incidunt asperiores sed nesciunt vitae ipsa expedita ex quaerat aliquid?
-
-
-{% if cart | length > 0 %}
-    {% for item in cart %}
-        <p> {{item.product.name}}
-        <p> {{item.quantity}} <p>
     
-    {% endfor %}
-{% else %}
-    <p> Le panier est vide </p>
-{% endif %}
+    <h1> Mon chariot </h1>
 
+    {% if cart | length > 0 %}
+        <table class="table tableClass mt-0 p-0">
+            <thead> <tr>
+                <td> <b> Nom </b> </td>
+                <td> <b> Prix (€) </b></td>
+                <td> <b> Quantity </b></td>
+                <td> <b> Total </b></td> 
+                <td> <td>
+            </tr></thead>
+
+            <tbdoy>
+                {% for item in cart %}
+                    <tr>
+                    <td> {{item.product.name}} </td>
+                    <td> {{item.product.price}} </td>
+                    <td> {{item.quantity}} </td>
+                    <td> {{item.quantity * item.product.price}} </td>
+                    </tr>
+            
+                {% endfor %}
+            </tbdoy>            
+        </table>
+
+    {% else %}
+        <h2> Votre chariot est vide </h2>
+    {% endif %}
+    
+    <div class="btn-group mb-5" role="group">
+        <a href="/product"> <button class="btn btn-secondary addQuestion"> Continuer mes achats </button> </a>
+        <a href="/order"> <button class="btn btn-secondary addQuestion"> Valider ma commande </button> </a>
+    </div>
+
+    <h2> Total de la commande : {{totalPrice}} € </h2>
 
 {% endblock %}

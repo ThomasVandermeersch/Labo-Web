@@ -21,7 +21,7 @@ use App\Repository\OrderRepository;
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/order", name="order")
+     * @Route("/order", name="order_make")
      */
     public function newOrder(Request $request,EntityManagerInterface $manager,ProductRepository $productrepo)
     {
@@ -56,7 +56,7 @@ class OrderController extends AbstractController
 
                 $manager->persist($orderProduct);
                 $manager->flush();
-                
+                $session->set('cart',[]);
             }
             return $this->redirectToRoute("product");
         } 
@@ -86,7 +86,4 @@ class OrderController extends AbstractController
             'order'=> $order
         ]);
     }
-
-
-
 }
