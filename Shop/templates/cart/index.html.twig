@@ -6,10 +6,17 @@
 {% block body %}
 
 <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit numquam molestias repellendus, consequuntur ullam placeat amet illo assumenda, soluta distinctio incidunt asperiores sed nesciunt vitae ipsa expedita ex quaerat aliquid?
-<ul>
-{% for item in product %}
-    <li> {{item.number}}</li>
 
-{% endfor %}
-<ul>
+
+{% if cart | length > 0 %}
+    {% for item in cart %}
+        <p> {{item.product.name}}
+        <p> {{item.quantity}} <p>
+    
+    {% endfor %}
+{% else %}
+    <p> Le panier est vide </p>
+{% endif %}
+
+
 {% endblock %}

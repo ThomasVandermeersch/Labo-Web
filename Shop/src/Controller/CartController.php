@@ -4,61 +4,89 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
 use App\Entity\Product;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\OrderProductRepository;
+use App\Repository\ProductRepository;
 
 
 
 class CartController extends AbstractController
 {
     /**
-     * @Route("/cart", name="cart")
+     * @Route("/cart", name="cart_index")
      */
-    public function index(): Response
+    public function index( Request $request, ProductRepository $productrepo): Response
     {
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
+
+        foreach($cart as $id => $quantity){
+            $cartS[] = [
+                'product' => $productrepo->find($id),
+                'quantity'=> $quantity
+            ];
+        }
         return $this->render('cart/index.html.twig', [
             'controller_name' => 'CartController',
+            'cart' => $cartS
         ]);
     }
 
     /**
      * @Route("/cart/addProduct/{id}", name="cart")
      */
-    public function addProduct(Product $product,EntityManagerInterface $manager, OrderProductRepository $repo ): Response
+    public function addProduct(Product $product,EntityManagerInterface $manager, ProductRepository $repo, Request $request ): Response
     {
-        $order = new Order();
-        $order-> setCreatedAt(new \DateTime());
-        $order->setCustomerName("Jean-François");
-        $order->setEmail("salut@ecam.be");
-        $order->setTotalPrice(200);
-        $order->setValidated(0);
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
 
-        $manager->persist($order);
-        $manager->flush();
+        if(!empty($cart[$product->getId()])){
+            $cart[$product->getId()]++;        
+        }
+        else{
+            $cart[$product->getId()] = 1;        
+        }
+                 
+        $session->set('cart',$cart);
 
-        $orderproduct = new OrderProduct();
-        $orderproduct->setProductID($product);
-        $orderproduct->setOrderID($order);
-        $orderproduct->setNumber(5);
 
-        $manager->persist($orderproduct);
-        $manager->flush();
 
-        $orderproduct = $repo->findBy(
-            ['orderID' => 11]
-        );
+    //     $order = new Order();
+    //     $order-> setCreatedAt(new \DateTime());
+    //     $order->setCustomerName("Jean-François");
+    //     $order->setEmail("salut@ecam.be");
+    //     $order->setTotalPrice(200);
+    //     $order->setValidated(0);
+
+    //     $manager->persist($order);
+    //     $manager->flush();
+
+    //     $orderproduct = new OrderProduct();
+    //     $orderproduct->setProductID($product);
+    //     $orderproduct->setOrderID($order);
+    //     $orderproduct->setNumber(5);
+
+    //     $manager->persist($orderproduct);
+    //     $manager->flush();
+
+    //     $orderproduct = $repo->findBy(
+    //         ['orderID' => 11]
+    //     );
         
-       // $orderproduct = $repo->findAll();
+    //    // $orderproduct = $repo->findAll();
         
-       return $this->render('cart/index.html.twig', [
-            'controller_name' => 'CartController',
-            'product' => $orderproduct
-        ]);
+    return $this->redirectToRoute('cart_index');
+
+    //dd($cart);
+    //    return $this->render('cart/index.html.twig', [
+    //         'controller_name' => 'CartController',
+    //         'product' => $cart
+    //     ]);
     }
 
 }
