@@ -1,0 +1,11 @@
+<h1> {{order.customerName}}
+
+<h2> {{order.email}} </h2>
+
+<h2> {{order.totalPrice}} </h2>
+
+<ul>
+{% for items in order.orderProducts %}
+    <li> {{items.productID.name}} </li>
+{% endfor %}
+</ul>

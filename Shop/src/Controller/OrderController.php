@@ -12,6 +12,9 @@ use App\Form\OrderType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ProductRepository;
+use App\Repository\OrderRepository;
+
+
 
 
 
@@ -62,4 +65,28 @@ class OrderController extends AbstractController
             'formOrder' => $form->createView()
             ]);
     }
+
+    /**
+     * @Route("/order/see", name="order")
+     */
+
+    public function seeOrders(OrderRepository $orderRepo){
+        $orders = $orderRepo->findAll();
+        return $this->render('order/seeOrder.html.twig',[
+            'orders'=> $orders
+        ]);
+    }
+
+    /**
+     * @Route("/order/see/{id}", name="orderSpecific")
+     */
+    public function seeOrder(Order $order){
+        
+        return $this->render('order/seeSpecifcOrder.html.twig',[
+            'order'=> $order
+        ]);
+    }
+
+
+
 }

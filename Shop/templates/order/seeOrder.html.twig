@@ -1,0 +1,8 @@
+<ul>
+{% for order in orders %}
+<a href= {{'/order/see/' ~ order.id}}>
+    <li> {{order.customerName}}  : {{order.totalPrice}}</li>
+</a>
+
+{% endfor %}
+</ul>
