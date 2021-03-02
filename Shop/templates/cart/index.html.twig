@@ -14,7 +14,7 @@
                 <td> <b> Prix (€) </b></td>
                 <td> <b> Quantity </b></td>
                 <td> <b> Total </b></td> 
-                <td> <td>
+                <td> <b> Actions </b></td>
             </tr></thead>
 
             <tbdoy>
@@ -24,6 +24,10 @@
                     <td> {{item.product.price}} </td>
                     <td> {{item.quantity}} </td>
                     <td> {{item.quantity * item.product.price}} </td>
+                    <td> 
+                        <a href={{'cart/removeOneProduct/' ~ item.product.id}}> <button> - </button> </a>
+                        <a href={{'cart/addProduct/' ~ item.product.id}}> <button> + </button> </a>
+                        <a href={{'cart/removeProduct/' ~ item.product.id}}> <button> X </button> </a>
                     </tr>
             
                 {% endfor %}

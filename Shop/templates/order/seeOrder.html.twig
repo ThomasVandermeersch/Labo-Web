@@ -1,8 +1,41 @@
-<ul>
-{% for order in orders %}
-<a href= {{'/order/see/' ~ order.id}}>
-    <li> {{order.customerName}}  : {{order.totalPrice}}</li>
-</a>
+{% extends 'base.html.twig' %}
 
-{% endfor %}
-</ul>
+{% block title %} Commandes clients {% endblock %}
+
+
+{% block body %}
+    
+    <h1> Commandes client </h1>
+
+
+{% if orders | length > 0 %}
+        <table class="table tableClass mt-0 p-0">
+            <thead> <tr>
+                <td> <b> ID </b> </td>
+                <td> <b> Nom client (€) </b></td>
+                <td> <b> Nombre d'articles </b></td>
+                <td> <b> Total </b></td> 
+                <td> <b> Actions </b></td>
+            </tr></thead>
+
+            <tbdoy>
+                {% for order in orders %}
+                    <tr>
+                    <td> {{order.id}} </td>
+                    <td> {{order.customerName}} </td>
+                    <td> 20 </td>
+                    <td> {{order.totalPrice}} </td>
+                    <td> 
+                        <a href={{'/order/see/' ~ order.id}}> <button> VOIR </button> </a>
+                        <a href={{'cart/removeProduct/' ~ order.id}}> <button> X </button> </a>
+                    </tr>
+            
+                {% endfor %}
+            </tbdoy>            
+        </table>
+
+    {% else %}
+        <h2> Votre chariot est vide </h2>
+{% endif %}
+
+    {% endblock %}

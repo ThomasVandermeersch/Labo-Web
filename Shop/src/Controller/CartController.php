@@ -59,7 +59,8 @@ class CartController extends AbstractController
                  
         $session->set('cart',$cart);
 
-
+    
+    
 
     //     $order = new Order();
     //     $order-> setCreatedAt(new \DateTime());
@@ -94,4 +95,35 @@ class CartController extends AbstractController
     //     ]);
     }
 
+
+    /**
+     * @Route("/cart/removeOneProduct/{id}", name="cart_removeOne")
+     */
+    public function removeOneProduct(Product $product,EntityManagerInterface $manager, ProductRepository $repo, Request $request ): Response
+    {
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
+        
+        if($cart[$product->getId()] ==1){
+            unset($cart[$product->getId()]);
+            $session->set('cart',$cart);
+        }
+        else{
+            $cart[$product->getId()]--;                 
+            $session->set('cart',$cart);
+        }
+        return $this->redirectToRoute('cart_index');
+    }
+
+    /**
+     * @Route("/cart/removeProduct/{id}", name="cart_remove")
+     */
+    public function removeProduct(Product $product,EntityManagerInterface $manager, ProductRepository $repo, Request $request ): Response
+    {
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
+        unset($cart[$product->getId()]);
+        $session->set('cart',$cart);
+        return $this->redirectToRoute('cart_index');
+    }
 }

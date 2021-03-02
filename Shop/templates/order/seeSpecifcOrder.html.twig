@@ -1,11 +1,46 @@
-<h1> {{order.customerName}}
 
-<h2> {{order.email}} </h2>
 
-<h2> {{order.totalPrice}} </h2>
+{% extends 'base.html.twig' %}
+{% block title %} Commande n° {{order.id}} {% endblock %}
 
-<ul>
-{% for items in order.orderProducts %}
-    <li> {{items.productID.name}} </li>
-{% endfor %}
-</ul>
+{% block body %}
+    
+    <h1> Commande n° {{order.id}} </h1>
+    <h2> Nom client :  {{order.customerName}} </h2>
+    <h2> Email client : {{order.email}} </h2>
+    <h2> Prix total : {{order.totalPrice}} </h2>    
+    
+    {% if order.orderProducts | length > 0 %}
+        <table class="table tableClass mt-0 p-0">
+            <thead> <tr>
+                <td> <b> Nom </b> </td>
+                <td> <b> Prix (€) </b></td>
+                <td> <b> Quantity </b></td>
+                <td> <b> Total </b></td> 
+                <td> <b> Actions </b></td>
+            </tr></thead>
+
+            <tbdoy>
+                {% for item in order.orderProducts %}
+                    <tr>
+                    <td> {{item.productID.name}} </td>
+                    <td> {{item.productID.price}} </td>
+                    <td> {{item.number}} </td>
+                    <td> {{item.number * item.productID.price}} </td>
+                    <td> 
+
+                    </tr>
+            
+                {% endfor %}
+            </tbdoy>            
+        </table>
+
+    {% else %}
+        <h2> Votre chariot est vide </h2>
+    {% endif %}
+    
+    <div class="btn-group mb-5" role="group">
+        <a href="/order/see"> <button class="btn btn-secondary addQuestion"> Retour aux commandes </button> </a>
+    </div>
+
+{% endblock %}
