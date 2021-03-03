@@ -9,12 +9,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/admin/{code}", name="admin")
      */
-    public function index(): Response
+    public function index($code): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        if($code=="super"){
+            return $this->render('admin/index.html.twig', [
+                'controller_name' => 'AdminController',
+            ]);
+        }
+        else{
+            return $this->redirectToRoute('product', [
+                'controller_name' => 'AdminController',
+            ]);
+
+        }
+
+
     }
 }
