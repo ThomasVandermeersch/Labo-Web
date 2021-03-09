@@ -9,8 +9,19 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminController extends AbstractController
 {
+
     /**
-     * @Route("/admin/{code}", name="admin")
+     * @Route("/admin/logout", name="log_out")
+     */
+    public function logOut(SessionInterface $session): Response
+    {
+        
+        $session->set('user', 'normal');
+        return $this->redirectToRoute('order');
+    }
+
+    /**
+     * @Route("/admin/login/{code}", name="admin")
      */
     public function index($code, SessionInterface $session): Response
     {
@@ -28,18 +39,4 @@ class AdminController extends AbstractController
             ]);
         }
     }
-
-
-
-    /**
-     * @Route("/admin/logOuT", name="log_out")
-     */
-    public function logOut(SessionInterface $session): Response
-    {
-        
-        $session->invalidate(); //here we can now clear the session.
-        $sesion->set('user', 'normal');
-        return $this->redirectToRoute('order');
-    }
-    
 }
