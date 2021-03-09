@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ProductType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ProductController extends AbstractController
 {
@@ -31,32 +32,33 @@ class ProductController extends AbstractController
     /**
     * @Route("/product/create",name="new_product")
     * @Route("/product/modify/{id}", name="modify_product")
- 
     */
-    public function newProduct(Product $product = null, Request $request,EntityManagerInterface $manager)
+    public function newProduct(Product $product = null, Request $request,EntityManagerInterface $manager, SessionInterface $session)
     {
-        if(! $product){
-            $product = new Product();
-        }
-        // $form = $this->createFormBuilder($product) //création d'un form lié à l'article.
-        //             ->add('name')
-        //             ->add('description')
-        //             ->add('price')
-        //             ->add('url')
-        //             ->getForm();
-        
-        $form = $this->createForm(ProductType::class,$product);
-        $form->handleRequest($request);
-        dump($product);
-        
-        if($form->isSubmitted() && $form->isValid()){
-            $manager->persist($product);
-            $manager->flush();
 
+        $user = $session->get('user', '');
+        if($user == 'admin'){
+            if(! $product){
+                $product = new Product();
+            }
+            
+            $form = $this->createForm(ProductType::class,$product);
+            $form->handleRequest($request);
+            dump($product);
+            
+            if($form->isSubmitted() && $form->isValid()){
+                $manager->persist($product);
+                $manager->flush();
+                return $this->redirectToRoute("product");
+            }
+
+            return $this->render('product/newProduct.html.twig', [
+                'formProduct' => $form->createView()
+                ]);
+        }
+
+        else{
             return $this->redirectToRoute("product");
-        } 
-        return $this->render('product/newProduct.html.twig', [
-            'formProduct' => $form->createView()
-            ]);
+        }
     }
 }

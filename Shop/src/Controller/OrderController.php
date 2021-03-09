@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ProductRepository;
 use App\Repository\OrderRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 
@@ -23,31 +24,23 @@ class OrderController extends AbstractController
     /**
      * @Route("/order", name="order_make")
      */
-    public function newOrder(Request $request,EntityManagerInterface $manager,ProductRepository $productrepo)
+    public function newOrder(Request $request, SessionInterface $session,EntityManagerInterface $manager,ProductRepository $productrepo)
     {
-        //if(! $product){
-            $order = new Order();
-        //}
-        // $form = $this->createFormBuilder($product) //création d'un form lié à l'article.
-        //             ->add('name')
-        //             ->add('description')
-        //             ->add('price')
-        //             ->add('url')
-        //             ->getForm();
+        $order = new Order();
         
         $form = $this->createForm(OrderType::class,$order);
         $form->handleRequest($request);
-        dump($order);
         
+        $totalPrice = $session->get('totalPrice', 0);
         if($form->isSubmitted() && $form->isValid()){
             $order->setCreatedAt(new \DateTime());
-            $order->setTotalPrice(200);
+            $order->setTotalPrice($totalPrice);
             $order->setValidated(0);
             $manager->persist($order);
             $manager->flush();
             
-            $session = $request->getSession();
             $cart = $session->get('cart', []);
+            
             foreach($cart as $id => $quantity){
                 $orderProduct = new OrderProduct();
                 $orderProduct->setProductID($productrepo->find($id));
@@ -70,20 +63,34 @@ class OrderController extends AbstractController
      * @Route("/order/see", name="order")
      */
 
-    public function seeOrders(OrderRepository $orderRepo){
-        $orders = $orderRepo->findAll();
-        return $this->render('order/seeOrder.html.twig',[
-            'orders'=> $orders
-        ]);
+    public function seeOrders(SessionInterface $session,OrderRepository $orderRepo){
+        
+        $user = $session->get('user', '');
+        if($user == 'admin'){
+            $orders = $orderRepo->findAll();
+            return $this->render('order/seeOrder.html.twig',[
+                'orders'=> $orders
+            ]);
+        }
+
+        else{
+            return $this->redirectToRoute("product");
+        }
     }
 
     /**
      * @Route("/order/see/{id}", name="orderSpecific")
      */
     public function seeOrder(Order $order){
-        
-        return $this->render('order/seeSpecifcOrder.html.twig',[
-            'order'=> $order
-        ]);
+        $user = $session->get('user', '');
+        if($user == 'admin'){
+            return $this->render('order/seeSpecifcOrder.html.twig',[
+                'order'=> $order
+            ]);
+        }
+        else{
+            return $this->redirectToRoute("product");
+        }
     }
+
 }
