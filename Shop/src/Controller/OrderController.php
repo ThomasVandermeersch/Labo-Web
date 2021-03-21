@@ -81,14 +81,14 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/see/{id}", name="orderSpecific")
      */
-    public function seeOrder(Order $order){
+    public function seeOrder(SessionInterface $session,Order $order){
         $user = $session->get('user', '');
         if($user == 'admin'){
             return $this->render('order/seeSpecifcOrder.html.twig',[
                 'order'=> $order
             ]);
         }
-        else{
+                else{
             return $this->redirectToRoute("product");
         }
     }
