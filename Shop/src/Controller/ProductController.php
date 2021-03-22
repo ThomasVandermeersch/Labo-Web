@@ -28,6 +28,8 @@ class ProductController extends AbstractController
             'products' => $products
         ]);
     }
+
+    
     
     /**
     * @Route("/product/create",name="new_product")

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -18,6 +19,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("product:read")
      */
     private $id;
 
@@ -29,6 +31,8 @@ class Product
          * minMessage = "Name must have 5 to 20 characters",
          * maxMessage = "Name must have 5 to 20 characters",
      *)
+     * @Groups("product:read")
+
      */
     private $name;
 
@@ -40,6 +44,8 @@ class Product
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("product:read")
+
      */
     private $price;
 
@@ -51,6 +57,8 @@ class Product
          * minMessage = "Name must have 5 to 20 characters",
          * maxMessage = "Name must have 5 to 20 characters",
      *)
+     * @Groups("product:read")
+
      */
     private $description;
 
