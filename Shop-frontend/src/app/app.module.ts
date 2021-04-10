@@ -7,6 +7,8 @@ import { ProductsComponent } from './products/products.component';
 import { CartComponent } from './cart/cart.component';
 import {ProductService} from './services/productService';
 import { SingleProductComponent } from './single-product/single-product.component'
+import {HttpClientModule} from '@angular/common/http'
+
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { SingleProductComponent } from './single-product/single-product.componen
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
+
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
