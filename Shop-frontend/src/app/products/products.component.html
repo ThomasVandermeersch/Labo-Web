@@ -1,1 +1,15 @@
-<p>products works!</p>
+
+<div class="row">
+    <div class="list-group shadow">
+
+        <ul class="list-group shadow">
+            
+            <app-single-product  *ngFor="let product of products"
+                [productName]="product.name"
+                [productPrice]="product.price"
+                [productUrl]="product.url" >
+            </app-single-product>
+           
+        </ul>
+    </div>
+</div>
