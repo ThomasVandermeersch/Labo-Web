@@ -18,8 +18,8 @@
             </div>
 
                 
-                <a href=""> 
-                    <button type="button" class="btn btn-secondary" value="Add Product"> Ajouter au chariot</button>
+                <a [routerLink]="['/cart']" [queryParams]="{add:productId}"> 
+                    <button type="button" class="btn btn-secondary"> Ajouter au chariot</button>
                 </a>
 
 

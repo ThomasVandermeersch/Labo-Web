@@ -9,6 +9,8 @@ export class SingleProductComponent implements OnInit {
   @Input() productName: string;
   @Input() productPrice: number;
   @Input() productUrl: string;
+  @Input() productId: string;
+
 
 
 
