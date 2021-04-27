@@ -1,0 +1,29 @@
+<div>
+
+<h1> Commande n° {{order.id}} </h1>
+    <h2> Nom client :  {{order.customerName}} </h2>
+    <h2> Email client : {{order.email}} </h2>
+    <h2> Prix total : {{order.totalPrice}} </h2>
+
+
+<h1> Détails de la commande</h1>
+
+
+    <table class="table tableClass mt-0 p-0">
+        <thead> <tr>
+            <td> <b> Nom </b> </td>
+            <td> <b> Prix (€) </b></td>
+            <td> <b> Quantité </b></td>
+            <td> <b> Total </b></td> 
+        </tr></thead> 
+        <tbody>                
+            <tr *ngFor='let product of orderProducts'>
+                <td> {{product.productID.name }} </td>
+                <td> {{product.productID.price}} </td> 
+                <td> {{product.number }} </td>
+                <td> {{product.number * product.productID.price}} </td>
+            </tr>  
+        </tbody>            
+    </table>
+
+</div>

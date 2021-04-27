@@ -33,6 +33,8 @@ class Order
     /**
      * @ORM\Column(type="float")
      * @Groups("order:readAll")
+     * @Groups("order:readOne")
+
 
      */
     private $totalPrice;
@@ -40,6 +42,8 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("order:readAll")
+     * @Groups("order:readOne")
+
 
      */
     private $customerName;

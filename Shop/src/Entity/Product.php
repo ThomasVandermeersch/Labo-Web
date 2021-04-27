@@ -49,6 +49,8 @@ class Product
     /**
      * @ORM\Column(type="float")
      * @Groups("product:read")
+     * @Groups("order:readOne")
+
 
      */
     private $price;

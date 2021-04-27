@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import {catchError} from 'rxjs/internal/operators';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
-import {Observable, throwError} from 'rxjs';
-import {map} from 'rxjs/operators'
-import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
-import { getLocaleExtraDayPeriods } from '@angular/common';
+import {Observable, queueScheduler, throwError} from 'rxjs';
 
 const endpoint = 'http://localhost:8000/api/'
 
-
-export interface Order {
+export interface Orders {
   idOrder:string;
   totalPriceOrder:number;
   custommerNameOrder:string;
-
 }
 
+export interface Order {
+  id:string;
+  totalPrice:number;
+  customerName:string;
+  email:string;
+  orderProducts:Array<any>;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +26,12 @@ export class OrderService {
 
   constructor(private http:HttpClient) { }
 
-    getOrders(): Observable<Order[]>{
-      return this.http.get<Order[]>(endpoint + 'order');
+    getOrders(): Observable<Orders[]>{
+      return this.http.get<Orders[]>(endpoint + 'order');
+    }
+
+    getOrder(id): Observable<Order>{
+      return this.http.get<Order>(endpoint + 'order/' + id);
     }
   
 }
