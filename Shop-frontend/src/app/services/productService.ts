@@ -46,7 +46,8 @@ export class ProductService {
 
   }
 
-    emitProductSubject() {
+  emitProductSubject() {
         this.productSubject.next(this.products.slice());
-      }
+  }
+
 }

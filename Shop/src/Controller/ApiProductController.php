@@ -27,29 +27,33 @@ class ApiProductController extends AbstractController
         return $this->json($products,200,['Access-Control-Allow-Origin'=> 'http://localhost:4200'],['groups' => 'product:read']);
     }
     /**
-     * @Route("/api/product/new", name="api_product_new",methods={"POST"})
+     * @Route("/api/product/new", name="api_product_new",methods={"POST","OPTIONS"})
      */
     public function newProduct(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,
     ValidatorInterface $validator)
     {
+        if ($request->isMethod('OPTIONS')) {
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+        }
+
         try{
             $json = $request->getContent();
             $product = $serializer->deserialize($json, Product:: class, 'json');
             
             $errors = $validator->validate($product);
             if(count($errors)>0){
-                return $this->json($errors, 400);
+                return $this->json($errors, 400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
             }
             
             $em->persist($product);
             $em->flush();
-            return $this->json($product,201,[],['groups'=>'product:read']);
+            return $this->json($product,201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
         
         } catch(NotEncodableValueException $e){
             return $this->json([
                 'status'=>400 ,
                 'message'=> $e->getMessage()
-            ], 400);
+            ], 400, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
         }
     }
 }
