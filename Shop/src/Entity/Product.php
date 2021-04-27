@@ -20,6 +20,8 @@ class Product
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups("product:read")
+     * @Groups("order:readOne")
+
      */
     private $id;
 
@@ -32,6 +34,8 @@ class Product
          * maxMessage = "Name must have 5 to 20 characters",
      *)
      * @Groups("product:read")
+     * @Groups("order:readOne")
+
 
      */
     private $name;
