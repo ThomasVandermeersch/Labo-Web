@@ -1,0 +1,21 @@
+
+<div>
+    <h1> Mon chariot </h1>
+
+    <table class="table tableClass mt-0 p-0">
+        <thead> <tr>
+            <td> <b> Id </b> </td>
+            <td> <b> Custommer name </b></td>
+            <td> <b> Total (€) </b></td>
+            <td> <b> Actions </b></td>
+        </tr></thead>
+
+        <tbody>                
+            <tr *ngFor='let order of orders'>
+                <td> {{ order.id }} </td>
+                <td> {{ order.customerName }} </td>
+                <td> {{ order.totalPrice }} </td>
+            </tr>    
+        </tbody>            
+    </table>
+</div>

@@ -7,7 +7,8 @@ import { ProductsComponent } from './products/products.component';
 import { CartComponent } from './cart/cart.component';
 import {ProductService} from './services/productService';
 import { SingleProductComponent } from './single-product/single-product.component'
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule} from '@angular/common/http';
+import { OrderComponent } from './order/order.component'
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {HttpClientModule} from '@angular/common/http'
     AppComponent,
     ProductsComponent,
     CartComponent,
-    SingleProductComponent
+    SingleProductComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

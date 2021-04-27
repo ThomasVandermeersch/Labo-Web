@@ -19,6 +19,8 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("order:readAll")
+
      * @Groups("order:readOne")
      */
     private $id;

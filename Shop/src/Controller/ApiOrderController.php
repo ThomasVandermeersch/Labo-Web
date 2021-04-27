@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiOrderController extends AbstractController
 {
     /**
-     * @Route("/api/order", name="api_order",methods={"GET"})
+     * @Route("/api/order", name="api_orderAll",methods={"GET"})
      */
     public function index()
     {
@@ -25,7 +25,7 @@ class ApiOrderController extends AbstractController
 
 
     /**
-     * @Route("/api/order/{id}", name="api_order",methods={"GET"})
+     * @Route("/api/order/{id}", name="api_orderOne",methods={"GET"})
      */
     public function singleOrder($id)
     {
