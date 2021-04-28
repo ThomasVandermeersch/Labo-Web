@@ -11,7 +11,8 @@ import { SingleProductComponent } from './single-product/single-product.componen
 import {HttpClientModule} from '@angular/common/http';
 import { OrderComponent } from './order/order.component';
 import { SingleOrderComponent } from './single-order/single-order.component';
-import { ProductAddComponent } from './product-add/product-add.component'
+import { ProductAddComponent } from './product-add/product-add.component';
+import { OrderAddComponent } from './order-add/order-add.component'
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ProductAddComponent } from './product-add/product-add.component'
     SingleProductComponent,
     OrderComponent,
     SingleOrderComponent,
-    ProductAddComponent
+    ProductAddComponent,
+    OrderAddComponent
   ],
   imports: [
     BrowserModule,

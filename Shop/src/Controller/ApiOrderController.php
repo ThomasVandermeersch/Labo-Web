@@ -46,9 +46,9 @@ class ApiOrderController extends AbstractController
     public function newOrder(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,
     ValidatorInterface $validator,ProductRepository $productrepo)
     {
-        // if ($request->isMethod('OPTIONS')) {
-        //     return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
-        // }
+        if ($request->isMethod('OPTIONS')) {
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+        }
 
         try{
             $json = $request->getContent();
