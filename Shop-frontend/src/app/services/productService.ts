@@ -13,19 +13,19 @@ export class ProductService {
 
   //Search products in the database
   getProductsFromServer() {
-    this.httpClient
+    return this.httpClient
       .get<any[]>('http://localhost:8000/api/product')
-      .subscribe(
-        (response) => {
-          console.log('Response')
-          this.products = response;
-          this.emitProductSubject();
-        },
-        (error) => {
-          console.log('Erreur ! : ' + error);
-        }
-      );
-    }
+      // .subscribe(
+      //   (response) => {
+      //     console.log('Response')
+      //     this.products = response;
+      //     this.emitProductSubject();
+      //   },
+      //   (error) => {
+      //     console.log('Erreur ! : ' + error);
+      //   }
+      // );
+  }
   
   getProduct(id){
     console.log(this.products)
@@ -48,8 +48,12 @@ export class ProductService {
 
   }
 
-  emitProductSubject() {
-        this.productSubject.next(this.products.slice());
-  }
+  // emitProductSubject() {
+  //       this.productSubject.next(this.products.slice());
+  // }
 
 }
+
+// getOrders(): Observable<Orders[]>{
+//   return this.http.get<Orders[]>(endpoint + 'order');
+// }

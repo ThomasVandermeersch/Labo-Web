@@ -12,6 +12,10 @@ export class ProductService {
 
   constructor(private http:HttpClient) { }
 
+  
+  
+  
+  
   addProduct(product): Observable<any>{
     console.log(product)
     return this.http.post(endpoint + 'product/new',product)

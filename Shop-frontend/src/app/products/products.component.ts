@@ -15,13 +15,17 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     if(!this.productService.isLoaded){
-      this.productSubscription = this.productService.productSubject.subscribe(
-        (products: any[]) => {
-          this.products = products;
-        }
-      );
-      this.productService.emitProductSubject();
-      this.productService.getProductsFromServer();
+      // this.productSubscription = this.productService.productSubject.subscribe(
+      //   (products: any[]) => {
+      //     this.products = products;
+      //   }
+      // );
+      // this.productService.emitProductSubject();
+      this.productService.getProductsFromServer().subscribe((resp=>{
+        console.log(resp)
+        this.products = resp
+        this.productService.products = resp
+      }));
       this.productService.isLoaded = true;
     }
     else{
@@ -30,3 +34,10 @@ export class ProductsComponent implements OnInit {
 
   }
 }
+
+// this.service.getOrders().subscribe(
+//   (resp) => {
+//     console.log(resp);
+//     this.orders = resp//[{"id": 123, "totalPrice":23},{"id": 123, "totalPrice":23},{"id": 123, "totalPrice":29},{"id": 123, "totalPrice":23}]
+//   }
+// )
