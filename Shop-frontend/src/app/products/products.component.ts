@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../services/productService';
+import { ProductService } from '../services/product.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 })
 export class ProductsComponent implements OnInit {
   products: any[];
-  productSubscription : Subscription;
 
   constructor(private productService : ProductService) {}
 

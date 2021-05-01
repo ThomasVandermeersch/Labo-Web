@@ -11,7 +11,7 @@ import {CartService} from '../services/cart.service'
 })
 export class CartComponent implements OnInit {
   items: object;
-  constructor(private productService : ProductService,private route: ActivatedRoute,private cartService:CartService ){
+  constructor(private route: ActivatedRoute,private cartService:CartService ){
 
   }
     ngOnInit(){
