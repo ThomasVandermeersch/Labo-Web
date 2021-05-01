@@ -75,4 +75,30 @@ class ApiProductController extends AbstractController
 
         }
     }
+
+
+
+    /**
+     * @Route("/api/product/modify/{id}", name="api_product_modify",methods={"PUT","OPTIONS"})
+     */
+    public function modifyProduct(Product $product, Request $request, EntityManagerInterface $em){
+        if ($request->isMethod('OPTIONS')) {
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+        }
+        try{
+            $json = $request->getContent();
+            $modifiedProduct = json_decode($json);
+            $product->setPrice($modifiedProduct->price);
+            $product->setDescription($modifiedProduct->description);
+            //$product->setUrl($modifiedProduct->url);
+            $product->setName($modifiedProduct->name);
+
+            $em->persist($product);
+            $em->flush();
+            return $this->json($product,201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+
+        } catch(\Exception $e){
+           return $this->json($e,400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+        }
+   }
 }
