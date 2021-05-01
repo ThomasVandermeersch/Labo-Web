@@ -18,9 +18,12 @@
             </div>
 
                 
-                <a [routerLink]="['/cart']" [queryParams]="{add:productId}"> 
+                <a [routerLink]="['/=']" [queryParams]="{add:productId}"> 
                     <button type="button" class="btn btn-secondary"> Ajouter au chariot</button>
                 </a>
+                <button type="button" class="btn btn-danger" (click)="remove(productId)"> Effacer l'article</button>
+
+                
 
 
             <img

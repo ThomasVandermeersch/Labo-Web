@@ -17,7 +17,7 @@ export class ProductService {
   //Search products in the database
   getProductsFromServer() {
     return this.http
-      .get<any[]>('http://localhost:8000/api/product')
+      .get<any[]>(endpoint + 'product')
   }
 
   getProduct(id){
@@ -44,5 +44,10 @@ export class ProductService {
   addProduct(product): Observable<any>{
     console.log(product)
     return this.http.post(endpoint + 'product/new',product)
+  }
+
+  removeProduct(productId): Observable<any>{
+    console.log(productId)
+    return this.http.delete(endpoint + 'product/remove/'+productId)
   }
 }
