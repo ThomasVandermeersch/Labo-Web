@@ -7,6 +7,7 @@ use App\Entity\OrderProduct;
 
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,6 +89,25 @@ class ApiOrderController extends AbstractController
                 'status'=>400 ,
                 'message'=> $e->getMessage()
             ], 400, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+        }
+    }
+
+    /**
+     * @Route("/api/order/remove/{id}", name="api_order_remove",methods={"DELETE","OPTIONS"})
+     */
+    public function deleteOrder(Order $order, Request $request, EntityManagerInterface $em){
+        if ($request->isMethod('OPTIONS')) {
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+        }
+        try{
+            $orderProducts = $order->getOrderProducts();
+            $em->remove($order);
+            $em->flush();
+            return $this->json('{"status":"Removed succesfull"}',201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+
+        } catch(\Exception $e){
+           return $this->json($e,400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+
         }
     }
 

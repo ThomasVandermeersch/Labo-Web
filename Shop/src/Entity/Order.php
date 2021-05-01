@@ -61,7 +61,7 @@ class Order
     private $validated;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orderID")
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orderID",cascade={"remove"})
      * @Groups("order:readOne")
 
 
