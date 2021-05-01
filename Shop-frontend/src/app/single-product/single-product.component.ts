@@ -12,6 +12,8 @@ export class SingleProductComponent implements OnInit {
   @Input() productPrice: number;
   @Input() productUrl: string;
   @Input() productId: string;
+  @Input() productDescription: string;
+
 
   constructor(private service: ProductService) { }
 
@@ -23,6 +25,10 @@ export class SingleProductComponent implements OnInit {
     this.service.removeProduct(id).subscribe((resp)=>{
       console.log(resp)
     })
+  }
+
+  modify(id){
+    console.log("Modify : " + id)
   }
 
 }

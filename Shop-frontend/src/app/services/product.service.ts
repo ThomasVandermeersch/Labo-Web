@@ -50,4 +50,8 @@ export class ProductService {
     console.log(productId)
     return this.http.delete(endpoint + 'product/remove/'+productId)
   }
+
+  updateProduct(productId, product): Observable<any>{
+    return this.http.put(endpoint + 'product/modify/' + productId, product)
+  }
 }
