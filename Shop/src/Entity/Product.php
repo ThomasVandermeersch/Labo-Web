@@ -42,6 +42,8 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("product:read")
+
      * @Assert\Url
      */
     private $url;

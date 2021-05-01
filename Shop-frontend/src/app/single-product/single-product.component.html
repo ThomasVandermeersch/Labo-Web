@@ -19,7 +19,7 @@
 
                 
                 <a [routerLink]="['/cart']" [queryParams]="{add:productId}"> 
-                    <button type="button" class="btn btn-secondary"> Ajouter au chariot</button>
+                    <button type="button" class="btn btn-success"> Ajouter au chariot</button>
                 </a>
                 <button type="button" class="btn btn-danger" (click)="remove(productId)"> Effacer l'article</button>
                 
@@ -30,12 +30,11 @@
 
                 
 
-
             <img
                 src= {{productUrl}}
                 alt="Generic placeholder image" 
                 height="220" 
-                class="ml-lg-5 order-1 order-lg-2">
+                class="ml-lg-5 order-1 order-lg-2"/>
         </div>
     </div>
 </li>

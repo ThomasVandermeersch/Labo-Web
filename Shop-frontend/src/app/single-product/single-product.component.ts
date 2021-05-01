@@ -18,6 +18,7 @@ export class SingleProductComponent implements OnInit {
   constructor(private service: ProductService) { }
 
   ngOnInit(): void {
+    console.log('Product URL : ' + this.productUrl )
   }
 
   remove(id){
