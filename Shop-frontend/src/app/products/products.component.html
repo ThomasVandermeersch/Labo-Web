@@ -1,6 +1,7 @@
 
 <div class="row">
     Filtrer par nom :  <input type="text" placeholder="Nom du produit" (change)="filter($event.target.value)"> (Et sélectionner ENTREE)
+    <button (click)="clearFilter()"> Effacer filtre</button>
     <div class="list-group shadow">
 
         <ul class="list-group shadow">

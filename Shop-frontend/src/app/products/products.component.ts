@@ -57,4 +57,8 @@ export class ProductsComponent implements OnInit {
       this.products = filterList
     }
   }
+
+  clearFilter(){
+    this.products = this.productService.products
+  }
 }
