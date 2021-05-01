@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/productService';
 import { ActivatedRoute } from "@angular/router";
+import {CartService} from '../services/cart.service'
 
 
 @Component({
@@ -10,59 +11,54 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class CartComponent implements OnInit {
   items: object;
-  constructor(private productService : ProductService,private route: ActivatedRoute){
+  constructor(private productService : ProductService,private route: ActivatedRoute,private cartService:CartService ){
 
   }
     ngOnInit(){
-      this.items = this.productService.cart;
-
+      this.items = this.cartService.cart;
       if(this.route.snapshot.queryParams.add){
         this.increaseQuantity(this.route.snapshot.queryParams.add)
       }
-
-  
-      // if(this.route.snapshot.queryParams.add){
-      //   if(this.items[this.route.snapshot.queryParams.add]) this.items[this.route.snapshot.queryParams.add] += 1
-      //   else this.items[this.route.snapshot.queryParams.add] = 1
-      // }
-
-
-
     }
 
     increaseQuantity(id){
-      if(this.items[id]) this.items[id] += 1
-      else this.items[id] = 1
+      this.cartService.increaseQuantity(id);
+      // if(this.items[id]) this.items[id] += 1
+      // else this.items[id] = 1
     }
 
     decreaseQuantity(id){
-      this.items[id] -= 1
-      if(this.items[id] ==0){
-        this.removeItem(id)
-      }
+      this.cartService.decreaseQuantity(id)
+      // this.items[id] -= 1
+      // if(this.items[id] ==0){
+      //   this.removeItem(id)
+      //}
     }
 
     removeItem(id){
-      delete this.items[id]
+      this.cartService.removeItem(id)
     }
 
     getName(id){
-      var p = this.productService.getProductName(parseInt(id,10))
-      console.log(p)
-      return p
+      return this.cartService.getName(id)
+      // var p = this.productService.getProductName(parseInt(id,10))
+      // console.log(p)
+      // return p
     }
 
     getPrice(id){
-      var p = this.productService.getProductPrice(parseInt(id,10))
-      console.log(p)
-      return p
+      return this.cartService.getPrice(id)
+      // var p = this.productService.getProductPrice(parseInt(id,10))
+      // console.log(p)
+      // return p
     }
 
     getTotalPrice(){
-      var totalPrice = 0
-      for (const [key, value] of Object.entries(this.items)) {
-        totalPrice += (value * this.getPrice(key))
-      }
-      return totalPrice
+      return this.cartService.getTotalPrice()
+      // var totalPrice = 0
+      // for (const [key, value] of Object.entries(this.items)) {
+      //   totalPrice += (value * this.getPrice(key))
+      // }
+      // return totalPrice
     }
 }

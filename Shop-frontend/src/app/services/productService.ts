@@ -29,8 +29,10 @@ export class ProductService {
   
   getProduct(id){
     console.log(this.products)
+    console.log(id)
     var product = null;
     this.products.forEach(elem =>{
+      console.log(elem.id)
       if(elem.id == id) product = elem
     })
     console.log(product)

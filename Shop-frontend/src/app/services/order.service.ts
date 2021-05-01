@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import {catchError} from 'rxjs/internal/operators';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
-import {Observable, queueScheduler, throwError} from 'rxjs';
-
-import {ProductService} from './productService'
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs';
+import { CartService } from './cart.service';
 
 const endpoint = 'http://localhost:8000/api/'
 
@@ -26,7 +24,7 @@ export interface Order {
 })
 export class OrderService {
 
-  constructor(private http:HttpClient, private productService:ProductService) { }
+  constructor(private http:HttpClient, private cartService:CartService) { }
 
     getOrders(): Observable<Orders[]>{
       return this.http.get<Orders[]>(endpoint + 'order');
@@ -37,17 +35,10 @@ export class OrderService {
     }
 
     makeOrder(orderObject): Observable<any>{
-      console.log("---- CART ----")
-      console.log(this.productService.cart)
-      console.log("--- ORDER OBJECT ---- ")
-      orderObject.cart = this.productService.cart;
-      //orderObject.totalPrice = this.productService
+
+      orderObject.cart = this.cartService.cart;
+      orderObject.totalPrice = this.cartService.getTotalPrice()
       console.log(orderObject)
       return this.http.post(endpoint + 'order/new',orderObject)
     }  
 }
-
-// addProduct(product): Observable<any>{
-//   console.log(product)
-//   return this.http.post(endpoint + 'product/new',product)
-// }
