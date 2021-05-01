@@ -40,5 +40,10 @@ export class OrderService {
       orderObject.totalPrice = this.cartService.getTotalPrice()
       console.log(orderObject)
       return this.http.post(endpoint + 'order/new',orderObject)
-    }  
+    }
+
+    removeProduct(productId): Observable<any>{
+      console.log(productId)
+      return this.http.delete(endpoint + 'order/remove/'+productId)
+    }
 }
