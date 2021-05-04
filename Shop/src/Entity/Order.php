@@ -63,8 +63,6 @@ class Order
     /**
      * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orderID",cascade={"remove"})
      * @Groups("order:readOne")
-
-
      */
     private $orderProducts;
 

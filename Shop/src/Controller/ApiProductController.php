@@ -25,7 +25,7 @@ class ApiProductController extends AbstractController
     {
         $repo = $this->getDoctrine()->getRepository(Product::class);
         $products = $repo->findAll();
-        return $this->json($products,200,['Access-Control-Allow-Origin'=> 'http://localhost:4200'],['groups' => 'product:read']);
+        return $this->json($products,200,['Access-Control-Allow-Origin'=> '*'],['groups' => 'product:read']);
     }
     /**
      * @Route("/api/product/new", name="api_product_new",methods={"POST","OPTIONS"})
