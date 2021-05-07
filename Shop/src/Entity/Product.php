@@ -21,7 +21,6 @@ class Product
      * @ORM\Column(type="integer")
      * @Groups("product:read")
      * @Groups("order:readOne")
-
      */
     private $id;
 
@@ -35,15 +34,12 @@ class Product
      *)
      * @Groups("product:read")
      * @Groups("order:readOne")
-
-
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("product:read")
-
      * @Assert\Url
      */
     private $url;
@@ -52,21 +48,18 @@ class Product
      * @ORM\Column(type="float")
      * @Groups("product:read")
      * @Groups("order:readOne")
-
-
      */
     private $price;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Length(
-         * min=15,
+         * min=10,
          * max= 120,
-         * minMessage = "Name must have 5 to 20 characters",
-         * maxMessage = "Name must have 5 to 20 characters",
+         * minMessage = "Description must have 10 to 120 characters",
+         * maxMessage = "Description must have 10 to 120 characters",
      *)
      * @Groups("product:read")
-
      */
     private $description;
 
