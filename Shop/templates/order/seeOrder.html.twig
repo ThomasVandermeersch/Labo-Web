@@ -12,9 +12,8 @@
         <table class="table tableClass mt-0 p-0">
             <thead> <tr>
                 <td> <b> ID </b> </td>
-                <td> <b> Nom client (€) </b></td>
-                <td> <b> Nombre d'articles </b></td>
-                <td> <b> Total </b></td> 
+                <td> <b> Nom client  </b></td>
+                <td> <b> Total (€)</b></td> 
                 <td> <b> Actions </b></td>
             </tr></thead>
 
@@ -23,11 +22,10 @@
                     <tr>
                     <td> {{order.id}} </td>
                     <td> {{order.customerName}} </td>
-                    <td> 20 </td>
                     <td> {{order.totalPrice}} </td>
                     <td> 
                         <a href={{'/order/see/' ~ order.id}}> <button> VOIR </button> </a>
-                        <a href={{'cart/removeProduct/' ~ order.id}}> <button> X </button> </a>
+                        <a href={{'/order/remove/' ~ order.id}}> <button> X </button> </a>
                     </tr>
             
                 {% endfor %}
@@ -35,7 +33,7 @@
         </table>
 
     {% else %}
-        <h2> Votre chariot est vide </h2>
+        <h2> Vous n'avez pas de commandes </h2>
 {% endif %}
 
     {% endblock %}

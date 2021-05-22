@@ -15,10 +15,6 @@ use App\Repository\ProductRepository;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-
-
-
-
 class OrderController extends AbstractController
 {
     /**
@@ -26,8 +22,9 @@ class OrderController extends AbstractController
      */
     public function newOrder(Request $request, SessionInterface $session,EntityManagerInterface $manager,ProductRepository $productrepo)
     {
-        $order = new Order();
+        // Create a new Order
         
+        $order = new Order();
         $form = $this->createForm(OrderType::class,$order);
         $form->handleRequest($request);
         
@@ -41,6 +38,7 @@ class OrderController extends AbstractController
             
             $cart = $session->get('cart', []);
             
+            // Add products of the cart to the database
             foreach($cart as $id => $quantity){
                 $orderProduct = new OrderProduct();
                 $orderProduct->setProductID($productrepo->find($id));
@@ -64,17 +62,19 @@ class OrderController extends AbstractController
      */
 
     public function seeOrders(SessionInterface $session,OrderRepository $orderRepo){
-        
+        // Check if user has access to the orders
         $user = $session->get('user', '');
         if($user == 'admin'){
+            // Return all orders
             $orders = $orderRepo->findAll();
             return $this->render('order/seeOrder.html.twig',[
                 'orders'=> $orders
             ]);
         }
 
+        
         else{
-            return $this->redirectToRoute("product");
+            return $this->redirectToRoute("product"); //no access
         }
     }
 
@@ -82,15 +82,31 @@ class OrderController extends AbstractController
      * @Route("/order/see/{id}", name="orderSpecific")
      */
     public function seeOrder(SessionInterface $session,Order $order){
+        // Check if user has access to the orders
         $user = $session->get('user', '');
         if($user == 'admin'){
             return $this->render('order/seeSpecifcOrder.html.twig',[
                 'order'=> $order
             ]);
         }
-                else{
+        else{
             return $this->redirectToRoute("product");
         }
+    }
+
+    /**
+    * @Route("/order/remove/{id}",name="remove_order")
+    */
+    public function removeOrder(Order $order, EntityManagerInterface $em,  SessionInterface $session){
+        // Check if user has access to the orders
+
+        $user = $session->get('user', '');
+        if($user != 'admin') return $this->redirectToRoute("product");
+        
+        //If access
+        $em->remove($order);
+        $em->flush();
+        return $this->redirectToRoute("product");
     }
 
 }

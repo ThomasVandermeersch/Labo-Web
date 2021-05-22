@@ -40,7 +40,7 @@ class ProductController extends AbstractController
     * @Route("/product/create",name="new_product")
     * @Route("/product/modify/{id}", name="modify_product")
     */
-    public function newProduct(Product $product = null, Request $request,EntityManagerInterface $manager, SessionInterface $session)
+    public function productsModif(Product $product = null, Request $request,EntityManagerInterface $manager, SessionInterface $session)
     {
         // Check if the user has acces to this page
         $user = $session->get('user', '');
@@ -49,7 +49,7 @@ class ProductController extends AbstractController
         // Continue if access
 
 
-        if(! $product) $product = new Product();
+        if(! $product) $product = new Product(); //Create product if it doesn't exist
         
         $form = $this->createForm(ProductType::class,$product);
         $form->handleRequest($request);
@@ -71,9 +71,11 @@ class ProductController extends AbstractController
     * @Route("/product/remove/{id}",name="remove_product")
     */
     public function removeProduct(Product $product, EntityManagerInterface $em,  SessionInterface $session){
+        // Check if the user has acces to this page
         $user = $session->get('user', '');
         if($user != 'admin') return $this->redirectToRoute("product");
         
+        // Continue if access
         $em->remove($product);
         $em->flush();
         return $this->redirectToRoute("product");

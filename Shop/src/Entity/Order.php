@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -43,6 +44,12 @@ class Order
      * @ORM\Column(type="string", length=255)
      * @Groups("order:readAll")
      * @Groups("order:readOne")
+     * @Assert\Length(
+         * min=5,
+         * max= 20,
+         * minMessage = "Name must have 5 to 20 characters",
+         * maxMessage = "Name must have 5 to 20 characters",
+     *)
 
 
      */
@@ -51,7 +58,9 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("order:readOne")
-
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      */
     private $email;
 

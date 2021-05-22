@@ -25,20 +25,21 @@ class ApiOrderController extends AbstractController
      */
     public function index()
     {
+        //Find and return all orders
         $repo = $this->getDoctrine()->getRepository(Order::class);
         $products = $repo->findAll();
         return $this->json($products,200,['Access-Control-Allow-Origin'=> 'http://localhost:4200'],['groups' => 'order:readAll']);
     }
-
 
     /**
      * @Route("/api/order/{id}", name="api_orderOne",methods={"GET"})
      */
     public function singleOrder($id)
     {
+        //Find and return a single order
         $repo = $this->getDoctrine()->getRepository(Order::class);
-        $products = $repo->find($id);
-        return $this->json($products,200,['Access-Control-Allow-Origin'=> 'http://localhost:4200'],['groups' => 'order:readOne']);
+        $order = $repo->find($id);
+        return $this->json($order,200,['Access-Control-Allow-Origin'=> 'http://localhost:4200'],['groups' => 'order:readOne']);
     }
 
     /**
@@ -48,13 +49,14 @@ class ApiOrderController extends AbstractController
     ValidatorInterface $validator,ProductRepository $productrepo)
     {
         if ($request->isMethod('OPTIONS')) {
-            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
         }
 
         try{
             $json = $request->getContent();
             $newOrder = json_decode($json);
-    
+            
+            // Create a new Order
             $dbOrder = new Order();
             $dbOrder->setTotalPrice($newOrder->totalPrice);
             $dbOrder->setCustomerName($newOrder->customerName);
@@ -62,15 +64,18 @@ class ApiOrderController extends AbstractController
             $dbOrder->setCreatedAt(new \DateTime());
             $dbOrder->setValidated(0);
 
+            //Check if order data is consistent
+
             $errors = $validator->validate($dbOrder);
             if(count($errors)>0){
-                return $this->json($errors, 400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+                return $this->json($errors, 400,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
             }
             $em->persist($dbOrder);
             $em->flush();          
             
             $cart = (array) $newOrder->cart;
 
+            // Add the products in the cart to the database
             foreach($cart as $id => $quantity){
                 $orderProduct = new OrderProduct();
                 $orderProduct->setProductID($productrepo->find(intval($id)));
@@ -80,15 +85,14 @@ class ApiOrderController extends AbstractController
                 $em->persist($orderProduct);
                 $em->flush();
             }
-        return $this->json($dbOrder,201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
-
-
+            // If everithing works good
+            return $this->json($dbOrder,201,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
 
         }catch(NotEncodableValueException $e){
             return $this->json([
                 'status'=>400 ,
                 'message'=> $e->getMessage()
-            ], 400, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+            ], 400, ["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
         }
     }
 
@@ -97,11 +101,11 @@ class ApiOrderController extends AbstractController
      */
     public function deleteOrder(Order $order, Request $request, EntityManagerInterface $em){
         if ($request->isMethod('OPTIONS')) {
-            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
         }
         try{
             $orderProducts = $order->getOrderProducts();
-            $em->remove($order);
+            $em->remove($order);             //Remove the order from the database.
             $em->flush();
             return $this->json('{"status":"Removed succesfull"}',201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
 
@@ -110,36 +114,4 @@ class ApiOrderController extends AbstractController
 
         }
     }
-
-
-    // /**
-    //  * @Route("/api/order/new", name="api_order_new",methods={"POST","OPTIONS"})
-    //  */
-    // public function newOrder(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,
-    // ValidatorInterface $validator)
-    // {
-    //     if ($request->isMethod('OPTIONS')) {
-    //         return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
-    //     }
-
-    //     try{
-    //         $json = $request->getContent();
-    //         $product = $serializer->deserialize($json, Product:: class, 'json');
-            
-    //         $errors = $validator->validate($product);
-    //         if(count($errors)>0){
-    //             return $this->json($errors, 400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
-    //         }
-            
-    //         $em->persist($product);
-    //         $em->flush();
-    //         return $this->json($product,201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
-        
-    //     } catch(NotEncodableValueException $e){
-    //         return $this->json([
-    //             'status'=>400 ,
-    //             'message'=> $e->getMessage()
-    //         ], 400, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
-    //     }
-    // }
 }

@@ -23,10 +23,12 @@ class ApiProductController extends AbstractController
      */
     public function index()
     {
+        // Return all products
         $repo = $this->getDoctrine()->getRepository(Product::class);
         $products = $repo->findAll();
         return $this->json($products,200,['Access-Control-Allow-Origin'=> '*'],['groups' => 'product:read']);
     }
+    
     /**
      * @Route("/api/product/new", name="api_product_new",methods={"POST","OPTIONS"})
      */
@@ -41,42 +43,45 @@ class ApiProductController extends AbstractController
             $json = $request->getContent();
             $product = $serializer->deserialize($json, Product:: class, 'json');
             
+            // Verify product data is valid
             $errors = $validator->validate($product);
             if(count($errors)>0){
-                return $this->json($errors, 400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+                return $this->json($errors, 400,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
             }
+
+            // If valid, add product to the database
             
             $em->persist($product);
             $em->flush();
-            return $this->json($product,201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+            return $this->json($product,201,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
         
         } catch(NotEncodableValueException $e){
             return $this->json([
                 'status'=>400 ,
                 'message'=> $e->getMessage()
-            ], 400, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+            ], 400, ["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
         }
     }
+
+
     /**
      * @Route("/api/product/remove/{id}", name="api_product_remove",methods={"DELETE","OPTIONS"})
      */
     public function deleteProduct(Product $product, Request $request, EntityManagerInterface $em){
         if ($request->isMethod('OPTIONS')) {
-            return $this->json([], 200, ["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
+            return $this->json([], 200, ["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"]);
         }
         try{
+            //Remove product from the database
             $em->remove($product);
             $em->flush();
-            return $this->json('{"status":"Removed succesfull"}',201,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+            return $this->json('{"status":"Removed succesfull"}',201,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
 
         } catch(\Exception $e){
-           //dd($e->getCode()); 
-           return $this->json($e,400,["Access-Control-Allow-Origin" => "*", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
+           return $this->json($e,400,["Access-Control-Allow-Origin" => "http://localhost:4200", "Access-Control-Allow-Headers" => "*", "Access-Control-Allow-Methods" => "*"],['groups'=>'product:read']);
 
         }
     }
-
-
 
     /**
      * @Route("/api/product/modify/{id}", name="api_product_modify",methods={"PUT","OPTIONS"})
@@ -88,9 +93,10 @@ class ApiProductController extends AbstractController
         try{
             $json = $request->getContent();
             $modifiedProduct = json_decode($json);
+
+            // Modify product data
             $product->setPrice($modifiedProduct->price);
             $product->setDescription($modifiedProduct->description);
-            //$product->setUrl($modifiedProduct->url);
             $product->setName($modifiedProduct->name);
 
             $em->persist($product);
