@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { ProductService } from '../services/product.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { ProductService } from '../services/product.service';
   templateUrl: './single-product.component.html',
   styleUrls: ['./single-product.component.css']
 })
-export class SingleProductComponent implements OnInit {
+export class SingleProductComponent{
   
   @Input() productName: string;
   @Input() productPrice: number;
@@ -17,19 +17,7 @@ export class SingleProductComponent implements OnInit {
 
   constructor(private service: ProductService) { }
 
-  ngOnInit(): void {
-    console.log('Product URL : ' + this.productUrl )
-  }
-
-  remove(id){
-    console.log("Remove : " + id)
-    this.service.removeProduct(id).subscribe((resp)=>{
-      console.log(resp)
-    })
-  }
-
   modify(id){
     console.log("Modify : " + id)
   }
-
 }

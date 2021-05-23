@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
-import { Subscription } from 'rxjs';
 import { compareTwoStrings} from 'string-similarity';
 
 @Component({
@@ -10,32 +9,25 @@ import { compareTwoStrings} from 'string-similarity';
 })
 export class ProductsComponent implements OnInit {
   products: any[];
+  errorMsg = null;
 
   constructor(private productService : ProductService) {}
 
-
-
   ngOnInit() {
-
-
     if(!this.productService.isLoaded){
-      // this.productSubscription = this.productService.productSubject.subscribe(
-      //   (products: any[]) => {
-      //     this.products = products;
-      //   }
-      // );
-      // this.productService.emitProductSubject();
-      this.productService.getProductsFromServer().subscribe((resp=>{
-        console.log(resp)
+      this.productService.getProductsFromServer().subscribe((resp)=>{
         this.products = resp
         this.productService.products = resp
-      }));
-      this.productService.isLoaded = true;
+        this.productService.isLoaded = true;
+      },
+      (err)=>{
+        console.log(err)
+        this.errorMsg = 'Error with the API - check console for more details'
+      });
     }
     else{
       this.products = this.productService.products;
     }
-
   }
 
   filter(value){

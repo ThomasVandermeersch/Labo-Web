@@ -8,6 +8,7 @@
 
 <h1> Détails de la commande</h1>
 
+    <div *ngIf='errorMsg' class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
 
     <table class="table tableClass mt-0 p-0">
         <thead> <tr>

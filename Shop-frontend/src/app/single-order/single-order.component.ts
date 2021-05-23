@@ -9,10 +9,12 @@ import { ActivatedRoute,Router } from "@angular/router";
   styleUrls: ['./single-order.component.css']
 })
 export class SingleOrderComponent implements OnInit {
-  
+  errorMsg = null;
   order = {id:'', totalPrice:0,customerName:'',email:''} ;
   orderProducts: any[];
+  
   constructor(public service:OrderService,private route: ActivatedRoute,private router:Router) { }
+  
   ngOnInit(): void {
     if(this.route.snapshot.queryParams.inspect){
       this.getOrder(this.route.snapshot.queryParams.inspect)
@@ -22,22 +24,20 @@ export class SingleOrderComponent implements OnInit {
   getOrder(id){
     this.service.getOrder(id).subscribe(
       (resp) => {
-        console.log(resp);
         this.order = resp
         this.orderProducts = resp.orderProducts
-        console.log(this.orderProducts)
+      },
+      (err)=>{
+        console.log(err)
+        this.errorMsg = 'Error with the API - check console for more details'
       }
     )
   }
 
   remove(id){
-    console.log("Remove : " + id)
     this.service.removeProduct(id).subscribe((resp)=>{
-      console.log(resp)
       this.router.navigate(['/'])
 
     })
   }
-
-
 }

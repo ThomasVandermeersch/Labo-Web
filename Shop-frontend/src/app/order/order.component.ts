@@ -6,10 +6,13 @@ import {Order,OrderService} from '../services/order.service'
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
+
 export class OrderComponent implements OnInit {
 
   constructor(public service:OrderService,) { }
   orders: any[];
+  errorMsg = null;
+  
   ngOnInit(): void {
     this.getOrders();
   }
@@ -17,8 +20,11 @@ export class OrderComponent implements OnInit {
   getOrders(){
     this.service.getOrders().subscribe(
       (resp) => {
-        console.log(resp);
-        this.orders = resp//[{"id": 123, "totalPrice":23},{"id": 123, "totalPrice":23},{"id": 123, "totalPrice":29},{"id": 123, "totalPrice":23}]
+        this.orders = resp
+      },
+      (err)=>{
+        console.log(err)
+        this.errorMsg = 'Error with the API - check console for more details'
       }
     )
   }

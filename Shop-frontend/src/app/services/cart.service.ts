@@ -1,3 +1,4 @@
+import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import {ProductService} from './product.service'
 
@@ -5,7 +6,7 @@ import {ProductService} from './product.service'
   providedIn: 'root'
 })
 export class CartService {
-  cart = {13:0}
+  cart = {}
 
   constructor(private productService:ProductService) { }
 
@@ -41,9 +42,12 @@ export class CartService {
 
   getTotalPrice(){
     var totalPrice = 0
-    for (const [key, quantity] of Object.entries(this.cart)) {
-      totalPrice += (quantity * this.getPrice(key))
-    }
+ 
+    if(Object.keys(this.cart).length == 0){
+      for (const [key, quantity] of Object.entries(this.cart)) {
+        totalPrice += (this.getPrice(key) * Number(quantity))
+      }
+    } 
     return totalPrice
   }
 }

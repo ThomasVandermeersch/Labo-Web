@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {catchError} from 'rxjs/internal/operators';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
-import {Observable, queueScheduler, throwError} from 'rxjs';
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs';
 
 const endpoint = 'http://localhost:8000/api/'
 
@@ -21,14 +20,10 @@ export class ProductService {
   }
 
   getProduct(id){
-    console.log(this.products)
-    console.log(id)
     var product = null;
     this.products.forEach(elem =>{
-      console.log(elem.id)
       if(elem.id == id) product = elem
     })
-    console.log(product)
     return product
   }
 
@@ -42,13 +37,7 @@ export class ProductService {
   }
 
   addProduct(product): Observable<any>{
-    console.log(product)
     return this.http.post(endpoint + 'product/new',product)
-  }
-
-  removeProduct(productId): Observable<any>{
-    console.log(productId)
-    return this.http.delete(endpoint + 'product/remove/'+productId)
   }
 
   updateProduct(productId, product): Observable<any>{

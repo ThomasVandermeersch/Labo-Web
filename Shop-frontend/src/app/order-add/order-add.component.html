@@ -1,7 +1,8 @@
 <div>
 
     <h2> Entrer vos informations personnelles </h2>
-    
+    <div *ngIf='errorMsg' class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
+
     <input type="text" [(ngModel)]="order.customerName" placeholder="Your name"><br>
     <input type="email" [(ngModel)]="order.email" placeholder="Your email"><br>
     <button (click)="confirmOrder()"> Confirmer mes informations personelles </button>

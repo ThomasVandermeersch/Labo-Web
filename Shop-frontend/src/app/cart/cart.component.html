@@ -32,7 +32,7 @@
         
 <div class="btn-group mb-5" role="group">
         <a routerLink="/products"> <button class="btn btn-secondary addQuestion"> Continuer mes achats </button> </a>
-        <a routerLink="/order/add"> <button class="btn btn-secondary addQuestion"> Valider ma commande </button> </a>
+        <a routerLink="/order/add" *ngIf="(items | json) != ({} | json)"> <button class="btn btn-secondary addQuestion"> Valider ma commande </button> </a>
 </div>
 
 <h2> Total de la commande : {{ getTotalPrice() }} € </h2>

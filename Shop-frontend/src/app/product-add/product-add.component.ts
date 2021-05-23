@@ -12,6 +12,8 @@ export class ProductAddComponent implements OnInit {
   product = {name:"",url:"",price:0, description:""}
   productId = null;
   statusModify = false;
+  errorMsg = null;
+
   constructor(public service:ProductService,private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
@@ -26,11 +28,21 @@ export class ProductAddComponent implements OnInit {
     if(!this.statusModify){
       this.service.addProduct(this.product).subscribe((result)=>{
         this.router.navigate(['/'])
+     },
+     (err)=>{
+      console.log(err);
+      if(err.error.detail) this.errorMsg = err.error.detail
+      else this.errorMsg = 'An error occured -- check console for more details'
      })
     }
     else{
       this.service.updateProduct(this.productId,this.product).subscribe((result)=>{
         this.router.navigate(['/'])
+      },
+      (err)=>{
+        console.log(err);
+        if(err.error.detail) this.errorMsg = err.error.detail
+        else this.errorMsg = 'An error occured -- check console for more details'
       })
     }
   }
