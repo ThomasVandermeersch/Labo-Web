@@ -8,7 +8,7 @@ const endpoint = 'http://localhost:8000/api/'
   providedIn: 'root'
 })
 export class ProductService {
-  isLoaded = false;
+  isLoaded = false; // this variable is used to load the products just once 
   products = []
   constructor(private http:HttpClient) { }
 
@@ -19,7 +19,7 @@ export class ProductService {
       .get<any[]>(endpoint + 'product')
   }
 
-  getProduct(id){
+  getProduct(id){ // returns the product
     var product = null;
     this.products.forEach(elem =>{
       if(elem.id == id) product = elem
@@ -36,11 +36,11 @@ export class ProductService {
 
   }
 
-  addProduct(product): Observable<any>{
+  addProduct(product): Observable<any>{ // Save new product -- push to the API 
     return this.http.post(endpoint + 'product/new',product)
   }
 
-  updateProduct(productId, product): Observable<any>{
+  updateProduct(productId, product): Observable<any>{ // Modify product -- push to the API 
     return this.http.put(endpoint + 'product/modify/' + productId, product)
   }
 }

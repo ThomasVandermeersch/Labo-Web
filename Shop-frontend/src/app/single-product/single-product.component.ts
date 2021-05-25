@@ -17,7 +17,4 @@ export class SingleProductComponent{
 
   constructor(private service: ProductService) { }
 
-  modify(id){
-    console.log("Modify : " + id)
-  }
 }

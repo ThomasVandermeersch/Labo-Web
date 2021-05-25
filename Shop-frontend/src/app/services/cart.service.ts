@@ -11,43 +11,36 @@ export class CartService {
   constructor(private productService:ProductService) { }
 
   increaseQuantity(id){
-    console.log(id)
-    console.log("I'm called")
     if(this.cart[id]) this.cart[id] += 1 // Increase quantity if product in cart.
     else this.cart[id] = 1  // Add product in cart.
   }
 
   decreaseQuantity(id){
     this.cart[id] -= 1
-    if(this.cart[id] ==0){
+    if(this.cart[id] ==0){ //if cart is empty, remove product from the cart
       this.removeItem(id)
     }
   }
 
   removeItem(id){
-    delete this.cart[id]
+    delete this.cart[id] // remove item from the cart
   }
 
-  getName(id){
+  getName(id){ //get product inf
     var p = this.productService.getProductName(parseInt(id,10))
-    console.log(p)
     return p
   }
 
   getPrice(id){
     var p = this.productService.getProductPrice(parseInt(id,10))
-    console.log(p)
     return p
   }
 
-  getTotalPrice(){
+  getTotalPrice(){ // Get the total price of the cart
     var totalPrice = 0
- 
-    if(Object.keys(this.cart).length == 0){
-      for (const [key, quantity] of Object.entries(this.cart)) {
-        totalPrice += (this.getPrice(key) * Number(quantity))
-      }
-    } 
+    for (const [key, quantity] of Object.entries(this.cart)) {
+      totalPrice += (this.getPrice(key) * Number(quantity))
+    }
     return totalPrice
   }
 }

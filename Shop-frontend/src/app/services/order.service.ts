@@ -26,22 +26,22 @@ export class OrderService {
 
   constructor(private http:HttpClient, private cartService:CartService) { }
 
-    getOrders(): Observable<Orders[]>{
+    getOrders(): Observable<Orders[]>{ // Get all orders -- call to the API 
       return this.http.get<Orders[]>(endpoint + 'order');
     }
 
-    getOrder(id): Observable<Order>{
+    getOrder(id): Observable<Order>{ // Get specific order -- call to the API 
       return this.http.get<Order>(endpoint + 'order/' + id);
     }
 
-    makeOrder(orderObject): Observable<any>{
-
+    makeOrder(orderObject): Observable<any>{ // Make an order -- push to the API 
       orderObject.cart = this.cartService.cart;
+      console.log(this.cartService.getTotalPrice())
       orderObject.totalPrice = this.cartService.getTotalPrice()
       return this.http.post(endpoint + 'order/new',orderObject)
     }
 
-    removeProduct(productId): Observable<any>{
-      return this.http.delete(endpoint + 'order/remove/'+productId)
+    removeOrder(orderId): Observable<any>{ // Remove specific order -- delete to the API 
+      return this.http.delete(endpoint + 'order/remove/'+orderId)
     }
 }

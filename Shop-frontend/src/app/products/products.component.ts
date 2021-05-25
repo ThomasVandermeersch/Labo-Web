@@ -9,12 +9,12 @@ import { compareTwoStrings} from 'string-similarity';
 })
 export class ProductsComponent implements OnInit {
   products: any[];
-  errorMsg = null;
+  errorMsg = null; // display a message to the user when there is a problem with the API
 
   constructor(private productService : ProductService) {}
 
   ngOnInit() {
-    if(!this.productService.isLoaded){
+    if(!this.productService.isLoaded){ // this is used to load all products once. And not every time the page is request
       this.productService.getProductsFromServer().subscribe((resp)=>{
         this.products = resp
         this.productService.products = resp
@@ -30,19 +30,22 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  // Filter the products. 
+  // To improve custommer experience, we will allow some spelling mistakes
   filter(value){
-
     if(value==""){
-      this.products = this.productService.products
+      this.products = this.productService.products //if no filter ==> return all products
     }
     else{
       value = value.toLowerCase()
       const filterList = []
       this.productService.products.forEach((product)=>{
-        console.log(product.name)
-        console.log(value)
-        console.log(compareTwoStrings(product.name,value))
-        if(  compareTwoStrings(product.name.toLowerCase(),value) >0.65){
+        
+        // compareTwoStrings is a function of the npm module : "string similarity"
+        // the result of this function is the similarity between two strings expressed as 
+        // a number between 0 and 1.
+        // to have 'hEllO' and 'heLLo' considered as similar we will compare them in lowerCase 
+        if(  compareTwoStrings(product.name.toLowerCase(),value) >0.65){ 
           filterList.push(product)
         }
       })

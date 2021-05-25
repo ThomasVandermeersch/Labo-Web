@@ -11,7 +11,7 @@ export class OrderComponent implements OnInit {
 
   constructor(public service:OrderService,) { }
   orders: any[];
-  errorMsg = null;
+  errorMsg = null; // display a message to the user when there is a problem with the API
   
   ngOnInit(): void {
     this.getOrders();

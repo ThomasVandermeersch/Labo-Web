@@ -8,11 +8,13 @@ import { ActivatedRoute,Router } from "@angular/router";
   styleUrls: ['./product-add.component.css']
 })
 
-export class ProductAddComponent implements OnInit {
+// Product add is used to Add and Modifiy a product 
+
+export class ProductAddComponent implements OnInit { 
   product = {name:"",url:"",price:0, description:""}
   productId = null;
   statusModify = false;
-  errorMsg = null;
+  errorMsg = null; // display a message to the user when there is a problem with the API
 
   constructor(public service:ProductService,private route: ActivatedRoute, private router:Router) { }
 
@@ -20,13 +22,14 @@ export class ProductAddComponent implements OnInit {
     if(this.route.snapshot.queryParams.modify){
       this.productId = this.route.snapshot.queryParams.modify
       this.product = this.service.getProduct(this.productId)
-      this.statusModify = true;
+      this.statusModify = true; // set to true if product is modified !
     }
   }
 
   addProduct(){
-    if(!this.statusModify){
-      this.service.addProduct(this.product).subscribe((result)=>{
+    if(!this.statusModify){  // Adding a product to the database
+      this.service.addProduct(this.product).subscribe(()=>{
+        this.service.isLoaded = false; // because product change ==> reload products
         this.router.navigate(['/'])
      },
      (err)=>{
@@ -35,8 +38,9 @@ export class ProductAddComponent implements OnInit {
       else this.errorMsg = 'An error occured -- check console for more details'
      })
     }
-    else{
-      this.service.updateProduct(this.productId,this.product).subscribe((result)=>{
+    else{  // Modifing a product of the database
+      this.service.updateProduct(this.productId,this.product).subscribe(()=>{
+        this.service.isLoaded = false; // because product change ==> reload products
         this.router.navigate(['/'])
       },
       (err)=>{

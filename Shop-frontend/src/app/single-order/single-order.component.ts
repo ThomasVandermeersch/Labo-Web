@@ -22,6 +22,7 @@ export class SingleOrderComponent implements OnInit {
   }
 
   getOrder(id){
+    // Call of the API
     this.service.getOrder(id).subscribe(
       (resp) => {
         this.order = resp
@@ -34,10 +35,10 @@ export class SingleOrderComponent implements OnInit {
     )
   }
 
+  // Remove an order
   remove(id){
-    this.service.removeProduct(id).subscribe((resp)=>{
+    this.service.removeOrder(id).subscribe(()=>{
       this.router.navigate(['/'])
-
     })
   }
 }

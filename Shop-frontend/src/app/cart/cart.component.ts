@@ -13,14 +13,15 @@ export class CartComponent implements OnInit {
   constructor(private route: ActivatedRoute,private cartService:CartService ){}
     
   ngOnInit(){
-    this.items = this.cartService.cart;
+    this.items = this.cartService.cart; // The cart is stored in the service
+    
     if(this.route.snapshot.queryParams.add){
       this.increaseQuantity(this.route.snapshot.queryParams.add)
     }
   }
 
   increaseQuantity(id){
-    this.cartService.increaseQuantity(id);
+    this.cartService.increaseQuantity(id); // increase the product Qunatity in the cart
   }
 
   decreaseQuantity(id){
@@ -32,14 +33,14 @@ export class CartComponent implements OnInit {
   }
 
   getName(id){
-    return this.cartService.getName(id)
+    return this.cartService.getName(id) //get the name of the product
   }
 
   getPrice(id){
-    return this.cartService.getPrice(id)
+    return this.cartService.getPrice(id) //get the price of the product
   }
 
   getTotalPrice(){
-    return this.cartService.getTotalPrice()
+    return this.cartService.getTotalPrice() //get the price of the cart
   }
 }

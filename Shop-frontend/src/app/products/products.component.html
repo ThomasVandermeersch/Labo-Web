@@ -1,13 +1,12 @@
+<div *ngIf='errorMsg' class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
+
+<div>
+    <label> Filter par nom : </label>
+    <input type="text" placeholder="Nom du produit" (change)="filter($event.target.value)">
+    <button class="btn btn-danger" (click)="clearFilter()"> Effacer filtre</button>
+</div>
 
 <div class="row">
-    <div *ngIf='errorMsg' class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
-
-    <div>
-        <label> Filter par nom : </label>
-        <input type="text" placeholder="Nom du produit" (change)="filter($event.target.value)">
-        <button class="btn btn-danger" (click)="clearFilter()"> Effacer filtre</button>
-    </div>
-
     <div class="list-group shadow">
 
         <ul class="list-group shadow">
